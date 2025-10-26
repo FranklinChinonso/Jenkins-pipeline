@@ -1,0 +1,38 @@
+﻿pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '========== Checkout Stage =========='
+                checkout scm
+                echo 'Code checkout completed successfully!'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                echo '========== Build Stage =========='
+                sh 'python -m pip install --upgrade pip'
+                sh 'pip install -r requirements.txt'
+                echo 'Build stage completed successfully!'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo '========== Test Stage =========='
+                sh 'pytest test_app.py -v'
+                echo 'All tests passed!'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                echo '========== Deploy Stage =========='
+                sh 'python app.py'
+                echo 'Deployment successful!'
+            }
+        }
+    }
+}
